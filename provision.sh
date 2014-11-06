@@ -22,8 +22,6 @@
 
 #!/bin/bash --login
 
-#!/bin/bash --login
-
 #
 # environment vars
 #
