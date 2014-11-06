@@ -1,3 +1,6 @@
+# The following provisioning script was adapted from dan entous
+# Found on GitHub https://github.com/dan-nl/blacklight-vagrant
+
 # The MIT License (MIT)
 
 # Copyright (c) 2014 dan entous
