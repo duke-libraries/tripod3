@@ -73,10 +73,10 @@ To set up this VM for running Hydra:
 
 If nothing's happening on the ports above check to make sure Vagrant hasn't switched things to avoid a collision. Check the output from Vagrant up. For example:
 
-    ```
-    default: Fixed port collision for 3000 => 3000. Now on port 2200.
-    default: Fixed port collision for 8983 => 8983. Now on port 2201.
-    ```
+```
+==> default: Fixed port collision for 3000 => 3000. Now on port 2200.
+==> default: Fixed port collision for 8983 => 8983. Now on port 2201.
+```
 
 For more information about using Vagrant see the [Getting Started](https://docs.vagrantup.com/v2/getting-started/) documentation, particularly the sections on [Teardown](https://docs.vagrantup.com/v2/getting-started/teardown.html) and [Rebuild](https://docs.vagrantup.com/v2/getting-started/rebuild.html).
 
