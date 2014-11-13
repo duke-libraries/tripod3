@@ -8,7 +8,7 @@ Getting Started
 
 Included in this repository is a Vagrantfile and related shell script for setting up a standard Ubuntu 12.04 LTS 64-bit VM provisioned to run the [Hydra application](https://github.com/projecthydra/hydra/wiki/Dive-into-Hydra).
 
-To set up this VM for running Blacklight:
+To set up this VM for running Hydra:
 
 1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
@@ -69,7 +69,7 @@ To set up this VM for running Blacklight:
     $ rails s
     ```
 
-12. In your browser check to see that Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
+12. In your browser check to see that Hydra/Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
 
 If nothing's happening on the ports you're expecting check to make sure Vagrant hasn't changed the ports because of a collision. Check the output from Vagrant up. For example:
 
