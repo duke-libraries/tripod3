@@ -6,7 +6,7 @@ Digital collections and repository interfaces for Duke University Libraries.
 Getting Started
 ===============
 
-Included in this repository is a Vagrantfile and related shell script for setting up a standard Ubuntu 12.04 LTS 64-bit VM provisioned to run the [Blacklight quickstart application](https://github.com/projectblacklight/blacklight/wiki/Quickstart#creating-a-new-application-the-hard-way).
+Included in this repository is a Vagrantfile and related shell script for setting up a standard Ubuntu 12.04 LTS 64-bit VM provisioned to run the [Hydra application](https://github.com/projecthydra/hydra/wiki/Dive-into-Hydra).
 
 To set up this VM for running Blacklight:
 
@@ -33,15 +33,50 @@ To set up this VM for running Blacklight:
     $ vagrant ssh
     ```
 
-6. Change to the directory shared between the VM and your computer:
+6. Change to the hydra application directory shared between the VM and your computer:
 
     ```
-    $ cd /vagrant
+    $ cd /vagrant/hydra-tripod3
     ```
 
-7. Setup Blacklight by following the "Hard Way" instructions on the [Blacklight Quickstart page](https://github.com/projectblacklight/blacklight/wiki/Quickstart#creating-a-new-application-the-hard-way).
+7. Run bundler to install gem dependencies (this takes minutes):
 
-8. In your browser check to see that Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
+    ```
+    $ bundle install
+    ```
+
+8. Run database migrations:
+
+    ```
+    $ rake db:migrate
+    ```
+
+9. Setup Jetty locally (in the VM) as this is not included in the repository:
+
+    ```
+    $ rails g hydra:jetty
+    ```
+
+10. Start Jetty:
+
+    ```
+    $ rake jetty:start
+    ```
+
+11. Start the rails server:
+
+    ```
+    $ rails s
+    ```
+
+12. In your browser check to see that Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
+
+If nothing's happening on the ports you're expecting check to make sure Vagrant hasn't changed the ports because of a collision. Check the output from Vagrant up. For example:
+
+    ```
+    ==> default: Fixed port collision for 3000 => 3000. Now on port 2200.
+    ==> default: Fixed port collision for 8983 => 8983. Now on port 2201.
+    ```
 
 For more information about using Vagrant see the [Getting Started](https://docs.vagrantup.com/v2/getting-started/) documentation, particularly the sections on [Teardown](https://docs.vagrantup.com/v2/getting-started/teardown.html) and [Rebuild](https://docs.vagrantup.com/v2/getting-started/rebuild.html).
 
