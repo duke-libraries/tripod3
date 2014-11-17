@@ -170,7 +170,8 @@ echo
 echo
 echo 'creating gemset tripod3'
 echo '---------------------------'
-su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
+# su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
+su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --create'
 echo
 
 
