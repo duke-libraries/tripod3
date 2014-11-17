@@ -125,8 +125,6 @@ echo
 # su -c "/vagrant/shell-scripts/rvm.sh" vagrant
 # su -c "/vagrant/shell-scripts/blacklight.sh" vagrant
 
-su vagrant
-
 #
 # check for rvm
 # Installing required packages: gawk, g++, libyaml-dev, libsqlite3-dev,
@@ -142,26 +140,26 @@ if [ -e /home/vagrant/.rvm/scripts/rvm ]; then
     source /home/vagrant/.rvm/scripts/rvm
 else
     echo 'installing rvm'
-    gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
-    curl -sSL https://get.rvm.io | bash -s $1
-    source /usr/local/rvm/scripts/rvm
-    rvm requirements
+    su - vagrant -c 'gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3'
+    su - vagrant -c 'curl -sSL https://get.rvm.io | bash -s $1'
+    su - vagrant -c 'source /usr/local/rvm/scripts/rvm'
+    su - vagrant -c 'rvm requirements'
 fi
 echo
 
 
 #
-# check for ruby 2.1.4
+# check for ruby 2.1.5
 #
 echo
-echo 'check for ruby 2.1.4'
+echo 'check for ruby 2.1.5'
 echo '--------------------'
 ruby_version="$(rvm list 2>&1)"
-if echo $ruby_version | grep -q 'ruby-2.1.4'; then
-    echo 'ruby 2.1.4 already installed'
+if echo $ruby_version | grep -q 'ruby-2.1.5'; then
+    echo 'ruby 2.1.5 already installed'
 else
-    echo 'installing ruby 2.1.4'
-    rvm install 2.1.4
+    echo 'installing ruby 2.1.5'
+    su - vagrant -c 'rvm install 2.1.5'
 fi
 echo
 
@@ -177,7 +175,7 @@ if echo $gemset_list 2>&1 | grep -q 'tripod3'; then
     echo 'gemset tripod3 exists'
 else
     echo 'creating gemset tripod3'
-    rvm use ruby-2.1.4@tripod3 --ruby-version --create
+    su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
 fi
 echo
 
@@ -189,15 +187,15 @@ echo
 # check for rails
 #
 echo
-echo 'check for Rails 4.1.6'
+echo 'check for Rails 4.1.8'
 echo '---------------------'
-rvm ruby-2.1.4@tripod3 2>&1
+rvm ruby-2.1.5@tripod3 2>&1
 rails_version="$(rails -v 2>&1)"
-if echo $rails_version 2>&1 | grep -q 'Rails 4.1.6'; then
-    echo 'rails Rails 4.1.6 already installed'
+if echo $rails_version 2>&1 | grep -q 'Rails 4.1.8'; then
+    echo 'rails Rails 4.1.8 already installed'
 else
-    echo 'installing Rails 4.1.6'
-    gem install rails -v 4.1.6 --no-ri --no-rdoc
+    echo 'installing Rails 4.1.8'
+    su - vagrant -c 'gem install rails -v 4.1.8 --no-ri --no-rdoc'
 fi
 echo
 
