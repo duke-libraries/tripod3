@@ -168,15 +168,9 @@ echo
 # check for gemset tripod3
 #
 echo
-echo 'check for gemset tripod3'
+echo 'creating gemset tripod3'
 echo '---------------------------'
-gemset_list="$(rvm gemset list 2>&1)"
-if echo $gemset_list 2>&1 | grep -q 'tripod3'; then
-    echo 'gemset tripod3 exists'
-else
-    echo 'creating gemset tripod3'
-    su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
-fi
+su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
 echo
 
 
