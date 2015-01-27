@@ -71,7 +71,9 @@ To set up this VM for running Hydra:
 
 12. In your browser check to see that Hydra/Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
 
-If nothing's happening on the ports above check to make sure Vagrant hasn't switched things to avoid a collision. Check the output from Vagrant up. For example:
+If you get an error when trying to connect to Solr it may be that Solr is still in the process of starting. Give it a minute or two and try again.
+
+If there's still nothing happening on ports 3000 and/or 8983 check to make sure Vagrant hasn't changed the port assignments to avoid a collision. Check the output from the command "Vagrant up." For example:
 
 ```
 ==> default: Fixed port collision for 3000 => 3000. Now on port 2200.
