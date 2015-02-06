@@ -12,9 +12,9 @@ NOTE: You may want to either destroy or rename any previous local copies of the 
 
 To get started with this VM for developing DDR-Public:
 
-1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+1. If it is not already installed, download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
-2. Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
+2. If it is not already installed, download and install [Vagrant](https://www.vagrantup.com/downloads.html)
 
 3. Clone this [tripod3 git repository](https://github.com/duke-libraries/tripod3) to your workstation:
 
@@ -22,12 +22,12 @@ To get started with this VM for developing DDR-Public:
     $ git clone git@github.com:duke-libraries/tripod3.git
     ```
 
-4. Clone the [ddr-public repository](https://github.com/duke-libraries/ddr-public) in the tripod3/ directory.
+4. Clone the [ddr-public git repository](https://github.com/duke-libraries/ddr-public) in the tripod3/ directory.
 
     NOTE: I think we will each need to clone our own copy of the ddr-hydra application so that the vagrant setup and our ddr-public development work can be managed separately in git.
 
     ```
-    $ cd tripod
+    $ cd tripod3
     $ git clone git@github.com:duke-libraries/ddr-public.git
     ```
 
@@ -125,85 +125,4 @@ To get started with this VM for developing DDR-Public:
     $ rails s
     ```
 
-18. Start and web browser and check that you can access the DDR public interface at http://localhost:3000/. There is no connection to fedora or solr yet so searches will not return any results.
-
-
-Getting Started with the Dive Into Hydra Tutorial
-===============
-
-Included in this repository is a Vagrantfile and related shell script for setting up a standard Ubuntu 12.04 LTS 64-bit VM provisioned to run the [Hydra application](https://github.com/projecthydra/hydra/wiki/Dive-into-Hydra).
-
-To set up this VM for running Hydra:
-
-1. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-
-2. Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
-
-3. Clone this [tripod3 git repository](https://github.com/duke-libraries/tripod3) to your workstation:
-
-    ```
-    $ git clone git@github.com:duke-libraries/tripod3.git
-    ````
-
-4. Create your VM using Vagrant (this takes minutes):
-
-    ```
-    $ cd tripod3
-    $ vagrant up
-    ```
-
-5. Connect to your newly minted Ubuntu VM:
-
-    ```
-    $ vagrant ssh
-    ```
-
-6. Change to the hydra application directory shared between the VM and your computer:
-
-    ```
-    $ cd /vagrant/hydra-tripod3
-    ```
-
-7. Run bundler to install gem dependencies (this takes minutes):
-
-    ```
-    $ bundle install
-    ```
-
-8. Run database migrations:
-
-    ```
-    $ rake db:migrate
-    ```
-
-9. Setup Jetty locally (in the VM). Jetty is not included in the repository:
-
-    ```
-    $ rails g hydra:jetty
-    ```
-
-10. Start Jetty:
-
-    ```
-    $ rake jetty:start
-    ```
-
-11. Start the rails server:
-
-    ```
-    $ rails s
-    ```
-
-12. In your browser check to see that Hydra/Blacklight ([http://127.0.0.1:3000](http://127.0.0.1:3000)) and Solr ([http://127.0.0.1:8983/solr/](http://127.0.0.1:8983/solr/)) are running.
-
-If you get an error when trying to connect to Solr it may be that Solr is still in the process of starting. Give it a minute or two and try again.
-
-If there's still nothing happening on ports 3000 and/or 8983 check to make sure Vagrant hasn't changed the port assignments to avoid a collision. Check the output from the command "Vagrant up." For example:
-
-```
-==> default: Fixed port collision for 3000 => 3000. Now on port 2200.
-==> default: Fixed port collision for 8983 => 8983. Now on port 2201.
-```
-
-For more information about using Vagrant see the [Getting Started](https://docs.vagrantup.com/v2/getting-started/) documentation, particularly the sections on [Teardown](https://docs.vagrantup.com/v2/getting-started/teardown.html) and [Rebuild](https://docs.vagrantup.com/v2/getting-started/rebuild.html).
-
+18. Open a web browser and check that you can access the DDR public interface at [http://localhost:3000/](http://localhost:3000/). There is no connection to fedora or solr yet so searches will not return any results.
