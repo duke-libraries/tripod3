@@ -167,12 +167,12 @@ echo
 #
 # check for gemset tripod3
 #
-echo
-echo 'creating gemset tripod3'
-echo '---------------------------'
-# su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
-su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --create'
-echo
+# echo
+# echo 'creating gemset tripod3'
+# echo '---------------------------'
+# # su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
+# su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --create'
+# echo
 
 
 # make sure rvm is available as a function
@@ -193,6 +193,10 @@ else
     su - vagrant -c 'gem install rails -v 4.1.8 --no-ri --no-rdoc'
 fi
 echo
+
+# install MySQL and requirements
+apt-get install mysql-client-core-5.5 -y
+apt-get install libmysql-ruby libmysqlclient-dev -y
 
 #
 # check for application directory
