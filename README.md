@@ -76,30 +76,36 @@ To get started with this VM for developing DDR-Public:
     $ cp log4r.yml.sample log4r.yml
     ```
 
-11. In addition, you will need a number of configuration files that are not in the respository. I've shared these with you via Box in DDR-Public_Config_Files. They each belong in the following directory.
+11. In addition, you will need a number of configuration files that are not in the respository. I've shared these with you via Box in DDR-Public_Config_Files. They belong in the following locations.
 
     ```
     local_env.yml --> /ddr-public/config/local_env.yml
+    fedora.yml --> /ddr-public/config/fedora.yml
+    solr.yml --> /ddr-public/config/solr.yml
     remote.rb --> /ddr-public/config/environments/remote.rb
     production.rb --> /ddr-public/config/environments/production.rb
     development.rb --> /ddr-public/config/environments/development.rb
-    solr.yml --> /ddr-public/config/solr.yml
-    fedora.yml --> /ddr-public/config/fedora.yml
     ```
 
-12. Create your secret token by running the following command:
+12. Run Bundler to install gem dependencies:
 
     ```
-    rake secret
+    $ bundle install
     ```
 
-13. Copy the generated token from the command line into /ddr-public/config/local_env.yml following "SECRET_KEY_BASE:". It should look something like this:
+13. Create your secret token by running the following command:
+
+    ```
+    $ rake secret
+    ```
+
+14. Copy the generated token from the command line into /ddr-public/config/local_env.yml following "SECRET_KEY_BASE:". It should look something like this:
 
     ```
     SECRET_KEY_BASE: sdfkljgh809g8fd09g8dfojglf
     ```
 
-14. Install, configure, and start jetty by running the following commands. It will return the prompt to you eventually:
+15. Install, configure, and start jetty by running the following commands. It will return the prompt to you eventually:
 
     ```
     $ rake jetty:clean
@@ -107,22 +113,22 @@ To get started with this VM for developing DDR-Public:
     $ rake jetty:start
     ```
 
-15. Run database migrations:
+16. Run database migrations:
     
     ```
     $ rake db:migrate
     ```
 
-16. Prepare and run the tests. The tests took about 7 minutes to run.
+17. Prepare and run the tests. The tests took about 7 minutes to run.
 
     ```
     $ rake db:test:prepare
     $ rake spec
     ```
-17. Start the rails server.
+18. Start the rails server.
 
     ```
     $ rails s
     ```
 
-18. Open a web browser and check that you can access the DDR public interface at [http://localhost:3000/](http://localhost:3000/). There is no connection to fedora or solr yet so searches will not return any results.
+19. Open a web browser and check that you can access the DDR public interface at [http://localhost:3000/](http://localhost:3000/). There is no connection to fedora or solr yet so searches will not return any results.
