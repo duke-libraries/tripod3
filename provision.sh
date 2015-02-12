@@ -198,6 +198,10 @@ echo
 apt-get install mysql-client-core-5.5 -y
 apt-get install libmysql-ruby libmysqlclient-dev -y
 
+# install required packages for dul-hydra
+apt-get install imagemagick -y
+apt-get install redis-server -y
+
 #
 # check for application directory
 #
