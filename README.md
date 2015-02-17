@@ -257,7 +257,7 @@ Ingest the Michael Francis Blake Photographs
     $ scp -r cl334@repository-dev-01.lib.duke.edu:/nas/TUCASI_CIFS5/access/images/static/xml/mets/blake .
     ```
 
-6. Log into the staff interface (http://localhost:3000/)[http://localhost:3000/] using the credentials you set up.
+6. Log into the staff interface [http://localhost:3000/](http://localhost:3000/) using the credentials you set up.
 
 7. Within the staff interface select "New" > "Collection"
 
