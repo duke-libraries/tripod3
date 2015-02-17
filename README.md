@@ -152,6 +152,7 @@ Getting Started with DUL-Hydra
     $ cd dul-hydra
     $ rvm gemset create dul-hydra
     $ rvm --ruby-version use 2.1.5@dul-hydra
+    ```
 
 3. Run Bundler to install dependencies.
 
