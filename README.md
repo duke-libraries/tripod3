@@ -298,4 +298,10 @@ Ingest the Michael Francis Blake Photographs
     $ rake dul_hydra:batch:thumbnails COLLECTION_PID=changeme:NNN
     ```
 
-19. You should now be able to browse the Blake collection in both the ddr-public and dul-hydra applications.
+19. Start the public interface.
+
+    ```
+    $ cd /vagrant/ddr-public
+    $ rails s --port 3001
+
+20. You should now be able to browse the collection in the public interface [http://localhost:3001](http://localhost:3001) and the staff interface [http://localhost:3000](http://localhost:3000).
