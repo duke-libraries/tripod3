@@ -120,36 +120,26 @@ To get started with this VM for developing DDR-Public:
     $ rake db:migrate
     ```
 
-16. Prepare and run the tests. The tests took about 7 minutes to run.
-
-    ```
-    $ rake db:test:prepare
-    $ rake spec
-    ```
-
-17. Start the Rails server in ddr-public on port 3001. This is important so that dul-hydra can run on port 3000 in the next section.
-
-    ```
-    $ rails s --port 3001
-    ```
-
-18. You should be able to access the public interface in a browser [http://localhost:3001](http://localhost:3001/).
-
 
 Getting Started with DUL-Hydra
 ===============
 
-1. Clone the dul-hydra repository in tripod3
+1. Clone the dul-hydra repository in tripod3.
 
     ```
     $ cd tripod3
     $ git clone git@github.com:duke-libraries/dul-hydra.git
     ```
+2. Connect to the VM.
+
+    ```
+    $ vagrant ssh
+    ```
 
 2. Change to the dul-hydra directory and create a gemset for the project.
 
     ```
-    $ cd dul-hydra
+    $ cd /vagrant/dul-hydra
     $ rvm gemset create dul-hydra
     $ rvm --ruby-version use 2.1.5@dul-hydra
     ```
@@ -275,17 +265,21 @@ Ingest the Michael Francis Blake Photographs
 
 14. Click "Process" to being the ingest. You will have to refresh the page to see the progress. This will take a while. And the process may fail and need to be restarted.
 
-15. Once the ingest is complete run the following rake task.
+15. Once the ingest is complete run the following rake task.     You will likely see an error because it could not send an email, but the fixity check should run successfully regardless.
+
 
     ```
     $ rake dul_hydra:batch:fixity_check
     ```
+
 
 16.  Then ingest the metadata using the following command. Replace my BATCH_USER id with the username you set up. Replace changeme:NNN with the PID you noted in step 9.
 
     ```
     rake dul_hydra:batch:mets_folder FOLDER=/vagrant/METS/blake COLLECTION=changeme:NNN BATCH_USER=cory.lown@duke.edu
     ```
+
+    Enter p at the prompt. This will queue a batch process that you can start by clicking "Process" in the staff interface: [http://localhost:3000/batches](http://localhost:3000/batches). You will have to refresh the page to monitor the ingest progress.
 
 17. Publish the collection by running the following in the Rails console. Replace changeme:NNN with the PID of the collection you created.
 
