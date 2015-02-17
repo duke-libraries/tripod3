@@ -5,7 +5,7 @@ Digital collections and repository interfaces for Duke University Libraries.
 
 Included in this repository is a Vagrantfile and related shell script for setting up a standard Ubuntu 12.04 LTS 64-bit VM provisioned as a development environment for the [ddr-public](https://github.com/duke-libraries/ddr-public) and the [dul-hydra](https://github.com/duke-libraries/dul-hydra) projects.
 
-NOTE: If you already have a copy of this VM installed or running you should shut down the VM and reprovision using the latest Vagrantfile. You can then skip to Step 6 under "Getting Started with DDR-Public."
+NOTE: If you already have a copy of this VM installed or running you should shut down the VM and reprovision using the latest Vagrantfile. You can then skip to Step 6 under "Getting Started with DDR-Public." If you have already set up DDR-Public you should shut down jetty and then start at "Getting Started with DUL-Hydra"
 
 ```
 cd tripod3
@@ -232,14 +232,14 @@ Getting Started with DUL-Hydra
 Ingest the Michael Francis Blake Photographs
 ===============
 
-1. Copy the Blake images to your workstation.
+1. Copy the Blake images to your workstation. Replace USERNAME with your user name.
 
     ```
     $ cd tripod3/TUCASI_CIFS2/dpc-archive/Archived_NoAccess
     $ scp -r USERNAME@repository-dev-01.lib.duke.edu:/nas/TUCASI_CIFS2/dpc-archive/Archived_NoAccess/_in_repository/na_MFB .
     ```
 
-2. Copy the checksum file to your worksation.
+2. Copy the checksum file to your worksation. Replace USERNAME with you username.
 
     ```
     $ cd tripod3/fixity/fedora_ingest
@@ -250,11 +250,11 @@ Ingest the Michael Francis Blake Photographs
 
 4. In the file named na_MFB-TUCASI_CIFS2-sha256.txt Find and replace /nas/ with /vagrant/
 
-5. Copy the METS files to your workstation.
+5. Copy the METS files to your workstation. Replace USERNAME with your user name.
 
     ```
     $ cd tripod3/METS
-    $ scp -r cl334@repository-dev-01.lib.duke.edu:/nas/TUCASI_CIFS5/access/images/static/xml/mets/blake .
+    $ scp -r USERNAME@repository-dev-01.lib.duke.edu:/nas/TUCASI_CIFS5/access/images/static/xml/mets/blake .
     ```
 
 6. Log into the staff interface [http://localhost:3000/](http://localhost:3000/) using the credentials you set up.
@@ -265,7 +265,7 @@ Ingest the Michael Francis Blake Photographs
 
 9. Note the PID in the URL. You will need it later. It looks like "changeme:NNN" where NNN is a number.
 
-10. Select "DC Terms" > "identifier" and then add the "blake" in the identifier field. Click "Update Collection" to save the changes.
+10. Select "DC Terms" > "identifier" and then enter "blake" in the identifier field. Click "Update Collection" to save the changes.
 
 11. Select "Default Permissions" > "Modify" and then add "Public" to "Read Access" and add "creator" to "Edit." Then click "Save" and click "OK" at the prompt.
 
@@ -287,11 +287,11 @@ Ingest the Michael Francis Blake Photographs
     rake dul_hydra:batch:mets_folder FOLDER=/vagrant/METS/blake COLLECTION=changeme:NNN BATCH_USER=cory.lown@duke.edu
     ```
 
-17. Publish the collection by running the following in the Rails console.
+17. Publish the collection by running the following in the Rails console. Replace changeme:NNN with the PID of the collection you created.
 
     ```
     $ rails c
-    > col = Collection.find("changeme:1")
+    > col = Collection.find("changeme:NNN")
     > col.publish!
     > col.items.each {|i| i.publish! }
     > col.items.each { |i| i.components.each { |c| c.publish! }}
