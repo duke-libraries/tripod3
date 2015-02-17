@@ -4,3 +4,7 @@
 
 /ddr-public
 /dul-hydra
+
+/METS/blake/*.xml
+/fixity/fedora_ingest/*.txt
+/TUCASI_CIFS2/dpc-archive/Archived_NoAccess/na_MFB
