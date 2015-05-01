@@ -201,6 +201,7 @@ apt-get install libmysql-ruby libmysqlclient-dev -y
 # install required packages for dul-hydra
 apt-get install imagemagick -y
 apt-get install redis-server -y
+apt-get install libvips-tools -y
 
 #
 # check for application directory
