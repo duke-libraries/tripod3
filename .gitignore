@@ -4,7 +4,10 @@
 
 /ddr-public
 /dul-hydra
+/ddr-models
 
-/METS/blake/*.xml
+/METS/*
 /fixity/fedora_ingest/*.txt
-/TUCASI_CIFS2/dpc-archive/Archived_NoAccess/na_MFB
+/TUCASI_CIFS2/dpc-archive/Archived_NoAccess/*
+
+/assign_struct_metadata.rb
