@@ -306,3 +306,73 @@ Ingest the Michael Francis Blake Photographs
     ```
 
 20. You should now be able to browse the collection in the public interface [http://localhost:3001](http://localhost:3001) and the staff interface [http://localhost:3000](http://localhost:3000).
+
+Generate Pyramid TIFF Derivatives for Already-Ingested Items
+===============
+<em>These instructions are for a one-time conversion to PTIF for any TIFF files added before this processing became standard for all ingests.</em>
+
+1. On local workstation, get the latest tripod3 HEAD for an updated `Vagrantfile` & `provision.sh` script  
+	``` 
+	$ cd tripod3
+	$ git pull
+	```
+	
+2. Get the latest 'develop' HEAD for dul-hydra
+	```
+	$ cd dul-hydra
+	$ git checkout develop
+	$ git pull origin develop	
+	```
+			
+2. Restart the vagrant VM with the new provision and ssh to it
+	```
+	$ vagrant halt
+	$ vagrant up
+	$ vagrant ssh
+	```
+	
+3. Perform the following steps on the VM under dul-hydra  
+	```
+	$ cd /vagrant/dul-hydra
+	```
+4. Run `$ bundle install`
+
+5. Stop any Resque pool workers currently running
+	```
+	$ rake dul_hydra:queues:stop
+	```
+	If that doesn't work, stop them manually with `kill -9 \'cat tmp/pids/resque-pool.pid\` and verify no workers are running with `ps -ef | grep resque`
+	
+6. Create a folder on your workstation to store generated .ptif files. E.g., `tripod3/image-server-data`
+
+7. Add the following two entries to `dul-hydra/config/local_env.yml`
+	```
+	MULTIRES_IMAGE_EXTERNAL_FILE_STORE: /vagrant/image-server-data
+	EXTERNAL_FILE_SUBPATH_PATTERN: -/-/--
+	```
+8. Restart the Resque pool workers
+	```
+	$ rake dul_hydra:queues:start
+	```
+9. Get the `generate_ptifs.rb` script from shared Duke Box space under Tripod3/dul-hydra and put it on your local workstation, e.g., `tripod3/scripts/generate_ptifs.rb`
+
+10. Run the script from the `/vagrant/dul-hydra` directory:
+	```
+	$ rails runner -e development /vagrant/scripts/generate_ptifs.rb
+	```
+11. View the Resque workers' progress in a browser using resque-web
+	```
+	$ resque-web -L
+	```
+	
+12. Open the Resque Web Console at http://localhost:5678/ . If you click 'Live Poll' at the bottom right of the Overview tab you can watch jobs being added to the derivatives queue and then worked on. Any errors will end up in the 'failed' queue with more info for troubleshooting.
+
+13. Verify that PTIFs have been created and are stored on your local filesystem. Example path:
+`tripod3/image-server-data/d/b/ba/dbbab856-41da-4c3a-93bb-0b2d5eb1ead9/mfb011.ptif`
+`/vagrant/image-server-data/d/b/ba/dbbab856-41da-4c3a-93bb-0b2d5eb1ead9/mfb011.ptif`
+
+ 
+	
+	
+
+
