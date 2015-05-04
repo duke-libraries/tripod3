@@ -204,9 +204,8 @@ apt-get install redis-server -y
 apt-get install libvips-tools -y
 
 # install required packages for image server
-apt-get install libfcgi0ldbl libjpeg8 libtiff4 zlib1g libstdc++6 libmemcached6 -y
+apt-get install libfcgi0ldbl libjpeg-dev libtiff4-dev zlib1g libstdc++6 libmemcached6 -y
 apt-get install lighttpd -y
-dpkg -i /vagrant/image-server/iipimage-server_0.9.9-0ubuntu12.04_amd64.deb
 
 #
 # check for application directory
