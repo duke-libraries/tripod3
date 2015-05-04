@@ -206,6 +206,11 @@ apt-get install libvips-tools -y
 # install required packages for image server
 apt-get install libfcgi0ldbl libjpeg-dev libtiff4-dev zlib1g libstdc++6 libmemcached6 -y
 apt-get install lighttpd -y
+sh /vagrant/image-server/iipsrv-master/autogen.sh
+sh /vagrant/image-server/iipsrv-master/configure
+/vagrant/image-server/iipsrv-master/make
+mkdir /var/www/fcgi-bin
+cp /vagrant/image-server/iipsrv-master/src/iipsrv.fcgi /var/www/fcgi-bin/iipsrv.fcgi
 
 #
 # check for application directory
