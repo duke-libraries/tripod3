@@ -194,6 +194,8 @@ else
 fi
 echo
 
+
+
 # install MySQL and requirements
 apt-get install mysql-client-core-5.5 -y
 apt-get install libmysql-ruby libmysqlclient-dev -y
@@ -206,11 +208,88 @@ apt-get install libvips-tools -y
 # install required packages for image server
 apt-get install libfcgi0ldbl libjpeg-dev libtiff4-dev zlib1g libstdc++6 libmemcached6 -y
 apt-get install lighttpd -y
-sh /vagrant/image-server/iipsrv-master/autogen.sh
-sh /vagrant/image-server/iipsrv-master/configure
-/vagrant/image-server/iipsrv-master/make
-mkdir /var/www/fcgi-bin
-cp /vagrant/image-server/iipsrv-master/src/iipsrv.fcgi /var/www/fcgi-bin/iipsrv.fcgi
+
+echo
+echo 'check whether image server is installed'
+echo '---------------------'
+if ls /vagrant 2>&1 | grep -q 'image-server'; then
+    echo "image server already installed"
+else
+    echo "downloading and installing image server"
+    cd /vagrant/
+    mkdir image-server
+    cd /vagrant/image-server
+    wget https://github.com/ruven/iipsrv/archive/master.zip
+    unzip master.zip
+    cd /vagrant/image-server/iipsrv-master
+    sh ./autogen.sh
+    sh ./configure
+    make
+fi
+echo
+
+echo
+echo 'check if iipsrv exists in web directory'
+echo '---------------------'
+if ls /var/www/fcgi-bin/ 2>&1 | grep -q 'iipsrv.fcgi'; then
+    echo "iipsrv already copied to web directory"
+else
+    echo "copying iipsrv to web directory"
+    cd /
+    sudo mkdir /var/www/fcgi-bin
+    sudo cp /vagrant/image-server/iipsrv-master/src/iipsrv.fcgi /var/www/fcgi-bin/iipsrv.fcgi
+fi
+echo
+
+echo
+echo 'check if lighttpd config is linked for fastcgi'
+echo '---------------------'
+if ls /etc/lighttpd/conf-enabled 2>&1 | grep -q '10-fastcgi.conf'; then
+    echo "already linked lighttpd config for fastcgi"
+else
+    echo "linking lighttpd config for fastcgi"
+    sudo ln -s /etc/lighttpd/conf-available/10-fastcgi.conf /etc/lighttpd/conf-enabled/10-fastcgi.conf
+fi
+echo
+
+echo
+echo 'check if lighttpd is configured for iipsrv'
+echo '---------------------'
+if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q '/var/www/fcgi-bin/iipsrv.fcgi'; then
+    echo "lighttpd is already configured for iipsrv"
+else
+    echo "setting lighttpd config for iipsrv"
+    lighttpd_config="fastcgi.server = ( '/fcgi-bin/iipsrv.fcgi' =>\n
+      (( 'socket' => '/tmp/iipsrv-fastcgi.socket',\n
+         'check-local' => 'disable',\n
+         'min-procs' => 1,\n
+         'max-procs' => 1,\n
+         'bin-path' => '/var/www/fcgi-bin/iipsrv.fcgi',\n
+         'bin-environment' => (\n
+            'LOGFILE' => '/var/log/iipsrv.log',\n
+            'VERBOSITY' => '5',\n
+            'MAX_IMAGE_CACHE_SIZE' => '10',\n
+            'FILENAME_PATTERN' => '_pyr_',\n
+            'JPEG_QUALITY' => '90',\n
+            'MAX_CVT' => '8000'\n
+          )\n
+      ))\n
+    )\n"
+    echo -e ${lighttpd_config} | sudo tee -a /etc/lighttpd/lighttpd.conf
+fi
+echo
+
+echo
+echo 'check if port 9000 is set for lighttpd'
+echo '---------------------'
+if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'server.port = "9000"'; then
+    echo "already set lighttpd port"
+else
+    echo "setting lighttpd port"
+    sudo sed -i '/server.groupname/a server.port = "9000"' /etc/lighttpd/lighttpd.conf
+fi
+echo
+
 
 #
 # check for application directory
