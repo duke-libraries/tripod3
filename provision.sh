@@ -259,19 +259,19 @@ if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q '/var/www/fcgi-bin/iipsrv.fcgi
     echo "lighttpd is already configured for iipsrv"
 else
     echo "setting lighttpd config for iipsrv"
-    lighttpd_config="fastcgi.server = ( '/fcgi-bin/iipsrv.fcgi' =>\n
-      (( 'socket' => '/tmp/iipsrv-fastcgi.socket',\n
-         'check-local' => 'disable',\n
-         'min-procs' => 1,\n
-         'max-procs' => 1,\n
-         'bin-path' => '/var/www/fcgi-bin/iipsrv.fcgi',\n
-         'bin-environment' => (\n
-            'LOGFILE' => '/var/log/iipsrv.log',\n
-            'VERBOSITY' => '5',\n
-            'MAX_IMAGE_CACHE_SIZE' => '10',\n
-            'FILENAME_PATTERN' => '_pyr_',\n
-            'JPEG_QUALITY' => '90',\n
-            'MAX_CVT' => '8000'\n
+    lighttpd_config="\nfastcgi.server = ( \"/fcgi-bin/iipsrv.fcgi\" =>\n
+      (( \"socket\" => \"/tmp/iipsrv-fastcgi.socket\",\n
+         \"check-local\" => \"disable\",\n
+         \"min-procs\" => 1,\n
+         \"max-procs\" => 1,\n
+         \"bin-path\" => \"/var/www/fcgi-bin/iipsrv.fcgi\",\n
+         \"bin-environment\" => (\n
+            \"LOGFILE\" => \"/var/log/iipsrv.log\",\n
+            \"VERBOSITY\" => \"5\",\n
+            \"MAX_IMAGE_CACHE_SIZE\" => \"10\",\n
+            \"FILENAME_PATTERN\" => \"_pyr_\",\n
+            \"JPEG_QUALITY\" => \"90\",\n
+            \"MAX_CVT\" => \"8000\"\n
           )\n
       ))\n
     )\n"
