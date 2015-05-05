@@ -212,7 +212,7 @@ apt-get install lighttpd -y
 echo
 echo 'check whether image server is installed'
 echo '---------------------'
-if ls /vagrant/images-server 2>&1 | grep -q 'iipsrv-master'; then
+if ls /vagrant/image-server 2>&1 | grep -q 'iipsrv-master'; then
     echo "image server already installed"
 else
     echo "downloading and installing image server"
