@@ -212,7 +212,7 @@ apt-get install lighttpd -y
 echo
 echo 'check whether image server is installed'
 echo '---------------------'
-if ls /vagrant 2>&1 | grep -q 'image-server'; then
+if ls /vagrant/images-server 2>&1 | grep -q 'iipsrv-master'; then
     echo "image server already installed"
 else
     echo "downloading and installing image server"
@@ -244,7 +244,7 @@ echo
 echo
 echo 'check if lighttpd config is linked for fastcgi'
 echo '---------------------'
-if ls /etc/lighttpd/conf-enabled 2>&1 | grep -q '10-fastcgi.conf'; then
+if ls /etc/lighttpd/conf-enabled 2>&1 | grep -q 'fastcgi.conf'; then
     echo "already linked lighttpd config for fastcgi"
 else
     echo "linking lighttpd config for fastcgi"
@@ -280,9 +280,9 @@ fi
 echo
 
 echo
-echo 'check if port 9000 is set for lighttpd'
+echo 'check if port is set for lighttpd'
 echo '---------------------'
-if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'server.port = "9000"'; then
+if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'server.port'; then
     echo "already set lighttpd port"
 else
     echo "setting lighttpd port"
