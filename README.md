@@ -371,8 +371,50 @@ Generate Pyramid TIFF Derivatives for Already-Ingested Items
 `tripod3/image-server-data/d/b/ba/dbbab856-41da-4c3a-93bb-0b2d5eb1ead9/mfb011.ptif`
 `/vagrant/image-server-data/d/b/ba/dbbab856-41da-4c3a-93bb-0b2d5eb1ead9/mfb011.ptif`
 
+
+Installing and Running the iipsrv Image Server
+===============
+
+<em>If you are working with a fresh clone of the tripod3 repository, the image server was installed as part of the privisioning process. You may need to start the server.</em>
+
+1.  If the server is not already running, start it with the following command.
+    
+    ```
+    $ sudo lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    ```
+
+2. Check that you can access the image server at [http://localhost:9000/fcgi-bin/iipsrv.fcgi](http://localhost:9000/fcgi-bin/iipsrv.fcgi).
  
+ <em>If you are working with an older version of the Vagrant VM or have already installed the image server you have a few things to do to set up your VM before running the provisioner</em>
+
+ 1. On your workstation in the tripod3 project directory, get the latest version of the tripod3 repository.
+
+    ```
+    $ git fetch
+    $ git pull
+    ```
+
+2. If you have installed the image server or lighttpd already you should clean up a few things before running the vagrant provisioner. In the vagrant VM:
+
+    ```
+    $ sudo apt-get --purge remove lighttpd
+    $ rm -rf /vagrant/image-server/
+    $ rm -rf /var/www/fcgi-bin/
+    ```
+
+3. Run the provisioner to install and configure the image server and other required libraries. From the tripod3 directory on your workstation.
+
+    ```
+    $ vagrant provision
+    ```
 	
+4. In the Vagrant VM start the image server.
+
+    ```
+    $ sudo lighttpd -D -f /etc/lighttpd/lighttpd.conf
+    ```
+
+5. Check that you can access the image server at [http://localhost:9000/fcgi-bin/iipsrv.fcgi](http://localhost:9000/fcgi-bin/iipsrv.fcgi).
 	
 
 
