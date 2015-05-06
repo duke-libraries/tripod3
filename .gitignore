@@ -6,6 +6,8 @@
 /dul-hydra
 /ddr-models
 /image-server
+/image-server-data
+/scripts
 
 /METS/*
 /fixity/fedora_ingest/*.txt
