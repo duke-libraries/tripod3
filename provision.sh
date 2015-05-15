@@ -290,6 +290,28 @@ else
 fi
 echo
 
+echo
+echo 'check if mod_setenv is set for lighttpd'
+echo '---------------------'
+if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'mod_setenv'; then
+    echo "already set lighttpd mod_setenv"
+else
+    echo "setting lighttpd mod_setenv"
+    sudo sed -i '/server.modules/a        "mod_setenv",' /etc/lighttpd/lighttpd.conf
+fi
+echo
+
+echo
+echo 'check if Access-Control-Allow-Origin is set for lighttpd'
+echo '---------------------'
+if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'Access-Control-Allow-Origin'; then
+    echo "already set lighttpd Access-Control-Allow-Origin"
+else
+    echo "setting Access-Control-Allow-Origin mod_setenv"
+    sudo sed -i '/server.port/a setenv.add-response-header = ("Access-Control-Allow-Origin" => "*")' /etc/lighttpd/lighttpd.conf
+fi
+echo
+
 
 #
 # check for application directory
