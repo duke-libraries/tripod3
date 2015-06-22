@@ -375,7 +375,7 @@ Generate Pyramid TIFF Derivatives for Already-Ingested Items
 Installing and Running the iipsrv Image Server
 ===============
 
-*If you are working with a fresh clone of the tripod3 repository, the image server was installed as part of the privisioning process. You may need to start the server.*
+*If you are working with a fresh clone of the tripod3 repository, the image server was installed as part of the provisioning process. You may need to start the server.*
 
 1.  If the server is not already running, start it with the following command.
     
@@ -417,4 +417,9 @@ Installing and Running the iipsrv Image Server
     ```
 
 5. Check that you can access the image server at [http://localhost:9000/fcgi-bin/iipsrv.fcgi](http://localhost:9000/fcgi-bin/iipsrv.fcgi).
-    
+
+6. In `ddr-public/config/local_env.yml` add this line:
+
+	```
+	IMAGE_SERVER_URL: http://localhost:9000/fcgi-bin/iipsrv.fcgi
+	```    
