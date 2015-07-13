@@ -201,7 +201,7 @@ Getting Started with DUL-Hydra
 
 10. In config/folder_ingest.yml replace cory.lown@duke.edu with your username.
 
-11. Install and start Jetty.
+11. Install and start Jetty. NOTE: If you have already ingested collections do not run rake jetty:clean. This will reinstall jetty and erase what you've ingested.
 
     ```
     $ rake jetty:clean
