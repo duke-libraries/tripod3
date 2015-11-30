@@ -269,14 +269,14 @@ Ingest the Michael Francis Blake Photographs
 
 
     ```
-    $ rake dul_hydra:batch:fixity_check
+    $ rake dul_hydra:fixity:check
     ```
 
 
 16.  Then ingest the metadata using the following command. Replace my BATCH_USER id with the username you set up. Replace changeme:NNN with the PID you noted in step 9.
 
     ```
-    rake dul_hydra:batch:mets_folder FOLDER=/vagrant/METS/blake COLLECTION=changeme:NNN BATCH_USER=cory.lown@duke.edu
+    rake dul_hydra:batch:mets_folder FOLDER=/vagrant/METS/blake COLLECTION_PID=changeme:NNN BATCH_USER=cory.lown@duke.edu
     ```
 
     Enter p at the prompt. This will queue a batch process that you can start by clicking "Process" in the staff interface: [http://localhost:3000/batches](http://localhost:3000/batches). You will have to refresh the page to monitor the ingest progress.
