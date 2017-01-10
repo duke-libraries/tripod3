@@ -149,17 +149,17 @@ echo
 
 
 #
-# check for ruby 2.1.5
+# check for ruby 2.3.1
 #
 echo
-echo 'check for ruby 2.1.5'
+echo 'check for ruby 2.3.1'
 echo '--------------------'
 ruby_version="$(rvm list 2>&1)"
-if echo $ruby_version | grep -q 'ruby-2.1.5'; then
-    echo 'ruby 2.1.5 already installed'
+if echo $ruby_version | grep -q 'ruby-2.3.1'; then
+    echo 'ruby 2.3.1 already installed'
 else
-    echo 'installing ruby 2.1.5'
-    su - vagrant -c 'rvm install 2.1.5'
+    echo 'installing ruby 2.3.1'
+    su - vagrant -c 'rvm install 2.3.1'
 fi
 echo
 
@@ -182,15 +182,15 @@ echo
 # check for rails
 #
 echo
-echo 'check for Rails 4.1.8'
+echo 'check for Rails 4.2.7'
 echo '---------------------'
 rvm ruby-2.1.5@tripod3 2>&1
 rails_version="$(rails -v 2>&1)"
-if echo $rails_version 2>&1 | grep -q 'Rails 4.1.8'; then
-    echo 'rails Rails 4.1.8 already installed'
+if echo $rails_version 2>&1 | grep -q 'Rails 4.2.7'; then
+    echo 'rails Rails 4.2.7 already installed'
 else
-    echo 'installing Rails 4.1.8'
-    su - vagrant -c 'gem install rails -v 4.1.8 --no-ri --no-rdoc'
+    echo 'installing Rails 4.2.7'
+    su - vagrant -c 'gem install rails -v 4.2.7 --no-ri --no-rdoc'
 fi
 echo
 
