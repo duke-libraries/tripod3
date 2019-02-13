@@ -163,28 +163,12 @@ else
 fi
 echo
 
-
-#
-# check for gemset tripod3
-#
-# echo
-# echo 'creating gemset tripod3'
-# echo '---------------------------'
-# # su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --ruby-version --create'
-# su - vagrant -c 'rvm use ruby-2.1.5@tripod3 --create'
-# echo
-
-
-# make sure rvm is available as a function
-#source /usr/local/rvm/scripts/rvm
-
 #
 # check for rails
 #
 echo
 echo 'check for Rails 4.2.7'
 echo '---------------------'
-rvm ruby-2.1.5@tripod3 2>&1
 rails_version="$(rails -v 2>&1)"
 if echo $rails_version 2>&1 | grep -q 'Rails 4.2.7'; then
     echo 'rails Rails 4.2.7 already installed'
@@ -204,24 +188,25 @@ apt-get install libmysql-ruby libmysqlclient-dev -y
 apt-get install imagemagick -y
 apt-get install redis-server -y
 apt-get install libvips-tools -y
+apt-get install clamav-daemon -y
+
 
 # install required packages for image server
-apt-get install libfcgi0ldbl libjpeg-dev libtiff4-dev zlib1g libstdc++6 libmemcached6 -y
-apt-get install lighttpd -y
+apt-get install libfcgi0ldbl libjpeg8 libtiff5 zlib1g libstdc++6 libmemcached-dev -y
 
 echo
 echo 'check whether image server is installed'
 echo '---------------------'
-if ls /vagrant/image-server 2>&1 | grep -q 'iipsrv-master'; then
+if ls /vagrant/image-server 2>&1 | grep -q 'iipsrv-iipsrv-1.0'; then
     echo "image server already installed"
 else
     echo "downloading and installing image server"
     cd /vagrant/
     mkdir image-server
     cd /vagrant/image-server
-    wget https://github.com/ruven/iipsrv/archive/master.zip
-    unzip master.zip
-    cd /vagrant/image-server/iipsrv-master
+    wget https://github.com/ruven/iipsrv/archive/iipsrv-1.0.zip
+    unzip iipsrv-1.0.zip
+    cd /vagrant/image-server/iipsrv-iipsrv-1.0
     sh ./autogen.sh
     sh ./configure
     make
@@ -237,96 +222,94 @@ else
     echo "copying iipsrv to web directory"
     cd /
     sudo mkdir /var/www/fcgi-bin
-    sudo cp /vagrant/image-server/iipsrv-master/src/iipsrv.fcgi /var/www/fcgi-bin/iipsrv.fcgi
+    sudo cp /vagrant/image-server/iipsrv-iipsrv-1.0/src/iipsrv.fcgi /var/www/fcgi-bin/iipsrv.fcgi
 fi
 echo
 
 echo
-echo 'check if lighttpd config is linked for fastcgi'
+echo 'installing lighttpd'
 echo '---------------------'
-if ls /etc/lighttpd/conf-enabled 2>&1 | grep -q 'fastcgi.conf'; then
-    echo "already linked lighttpd config for fastcgi"
-else
-    echo "linking lighttpd config for fastcgi"
-    sudo ln -s /etc/lighttpd/conf-available/10-fastcgi.conf /etc/lighttpd/conf-enabled/10-fastcgi.conf
-fi
-echo
+
+# You may need to remove previously installed lighttp files
+# to clear out previous configuration:
+# sudo apt-get --purge remove lighttpd
+
+# install lighttpd
+apt-get install lighttpd -y
+
 
 echo
-echo 'check if lighttpd is configured for iipsrv'
-echo '---------------------'
+echo 'check if lighttpd is configured'
+echo '-------------------------------'
 if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q '/var/www/fcgi-bin/iipsrv.fcgi'; then
     echo "lighttpd is already configured for iipsrv"
 else
-    echo "setting lighttpd config for iipsrv"
-    lighttpd_config="\nfastcgi.server = ( \"/fcgi-bin/iipsrv.fcgi\" =>\n
+    echo "setting lighttpd config"
+    lighttpd_config="server.modules = (\n
+          \"mod_setenv\",\n
+          \"mod_access\",\n
+          \"mod_alias\",\n
+          \"mod_compress\",\n
+          \"mod_redirect\",\n
+          \"mod_fastcgi\"\n
+    )\n
+    \n
+    server.document-root        = \"/var/www\"\n
+    server.upload-dirs          = ( \"/var/cache/lighttpd/uploads\" )\n
+    server.errorlog             = \"/var/log/lighttpd/error.log\"\n
+    server.pid-file             = \"/var/run/lighttpd.pid\"\n
+    server.username             = \"www-data\"\n
+    server.groupname            = \"www-data\"\n
+    server.port                 = \"9001\"\n
+    setenv.add-response-header = (\"Access-Control-Allow-Origin\" => \"*\")\n
+    \n
+    index-file.names            = ( \"index.php\", \"index.html\",\n
+                                    \"index.htm\", \"default.htm\",\n
+                                    \"index.lighttpd.html\" )\n
+    \n
+    url.access-deny             = ( \"~\", \".inc\" )\n
+    \n
+    static-file.exclude-extensions = ( \".php\", \".pl\", \".fcgi\" )\n
+    \n
+    dir-listing.encoding        = \"utf-8\"\n
+    server.dir-listing          = \"enable\"\n
+    \n
+    compress.cache-dir          = \"/var/cache/lighttpd/compress/\"\n
+    compress.filetype           = ( \"application/x-javascript\", \"text/css\", \n
+                                    \"text/html\", \"text/plain\" )\n
+    \n
+    include_shell \"/usr/share/lighttpd/create-mime.assign.pl\"\n
+    include_shell \"/usr/share/lighttpd/include-conf-enabled.pl\"\n
+    \n
+    fastcgi.server = (\n
+      \"/fcgi-bin/iipsrv.fcgi\" =>\n
       (( \"socket\" => \"/tmp/iipsrv-fastcgi.socket\",\n
          \"check-local\" => \"disable\",\n
          \"min-procs\" => 1,\n
          \"max-procs\" => 1,\n
          \"bin-path\" => \"/var/www/fcgi-bin/iipsrv.fcgi\",\n
          \"bin-environment\" => (\n
-            \"LOGFILE\" => \"/var/log/iipsrv.log\",\n
-            \"VERBOSITY\" => \"5\",\n
-            \"MAX_IMAGE_CACHE_SIZE\" => \"10\",\n
-            \"FILENAME_PATTERN\" => \"_pyr_\",\n
-            \"JPEG_QUALITY\" => \"90\",\n
-            \"MAX_CVT\" => \"8000\"\n
-          )\n
+          \"LOGFILE\" => \"/var/log/iipsrv.log\",\n
+          \"VERBOSITY\" => \"5\",\n
+          \"MAX_IMAGE_CACHE_SIZE\" => \"10\",\n
+          \"FILENAME_PATTERN\" => \"_pyr_\",\n
+          \"JPEG_QUALITY\" => \"90\",\n
+          \"MAX_CVT\" => \"8000\",\n
+          \"MEMCACHED_SERVERS\" => \"127.0.0.1:11211\"\n
+         )\n
       ))\n
-    )\n"
-    echo -e ${lighttpd_config} | sudo tee -a /etc/lighttpd/lighttpd.conf
+    )\n
+    "
+    # replace the default config with the above
+    echo -e ${lighttpd_config} | sudo tee /etc/lighttpd/lighttpd.conf
 fi
 echo
 
 echo
-echo 'check if port is set for lighttpd'
-echo '---------------------'
-if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'server.port'; then
-    echo "already set lighttpd port"
-else
-    echo "setting lighttpd port"
-    sudo sed -i '/server.groupname/a server.port = "9000"' /etc/lighttpd/lighttpd.conf
-fi
-echo
+echo 'reloading lighttpd (picks up any config changes)'
+echo '------------------------------------------------'
+sudo /etc/init.d/lighttpd force-reload
+sudo /etc/init.d/lighttpd restart
 
 echo
-echo 'check if mod_setenv is set for lighttpd'
-echo '---------------------'
-if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'mod_setenv'; then
-    echo "already set lighttpd mod_setenv"
-else
-    echo "setting lighttpd mod_setenv"
-    sudo sed -i '/server.modules/a        "mod_setenv",' /etc/lighttpd/lighttpd.conf
-fi
-echo
-
-echo
-echo 'check if Access-Control-Allow-Origin is set for lighttpd'
-echo '---------------------'
-if cat /etc/lighttpd/lighttpd.conf 2>&1 | grep -q 'Access-Control-Allow-Origin'; then
-    echo "already set lighttpd Access-Control-Allow-Origin"
-else
-    echo "setting Access-Control-Allow-Origin mod_setenv"
-    sudo sed -i '/server.port/a setenv.add-response-header = ("Access-Control-Allow-Origin" => "*")' /etc/lighttpd/lighttpd.conf
-fi
-echo
-
-
-#
-# check for application directory
-#
-# echo
-# echo 'check for application directory'
-# echo '-------------------------------'
-# if [ -d $BLACKLIGHT_APPLICATION_DIR ]; then
-#     echo 'application directory exits'
-# else
-#     echo 'creating application directory'
-#     mkdir $BLACKLIGHT_APPLICATION_DIR
-
-#     cd $BLACKLIGHT_APPLICATION_DIR
-#     echo 'installing blacklight'
-#     rails new . -m https://raw.github.com/projectblacklight/blacklight/master/template.demo.rb
-# fi
 echo
