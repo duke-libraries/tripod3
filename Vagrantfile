@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -26,6 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 3001, host: 3001, auto_correct: true
   config.vm.network "forwarded_port", guest: 5678, host: 5678, auto_correct: true
   config.vm.network "forwarded_port", guest: 9000, host: 9000, auto_correct: true
+  config.vm.network "forwarded_port", guest: 9001, host: 9001, auto_correct: true
   config.vm.network "forwarded_port", guest: 3002, host: 3002, auto_correct: true
 
   # Create a private network, which allows host-only access to the machine
